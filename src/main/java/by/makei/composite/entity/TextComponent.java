@@ -17,6 +17,7 @@ public interface TextComponent {
         throw new CustomException("Operation is not supported");
     }
 
+
 //    default TextComponent getChildByIndex(int index) throws CustomException {
 //        throw new CustomException("Operation is not supported");
 //    }

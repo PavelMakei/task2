@@ -1,6 +1,5 @@
 package by.makei.composite.util;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
@@ -13,5 +12,5 @@ public interface CustomFileUtil {
      * @param fileName  String
      * @return file File
      */
-    File getFileFromStringForResourcesPackage(@NotNull String fileName);
+    File getFileFromStringForResourcesPackage(String fileName);
 }
