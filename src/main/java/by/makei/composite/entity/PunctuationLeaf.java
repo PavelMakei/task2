@@ -1,9 +1,9 @@
 package by.makei.composite.entity;
 
-public class Punctuation implements TextComponent{
+public class PunctuationLeaf implements TextComponent{
     private char punctuationMark;
 
-    public Punctuation(char punctuationMark) {
+    public PunctuationLeaf(char punctuationMark) {
         this.punctuationMark = punctuationMark;
     }
 
@@ -19,9 +19,7 @@ public class Punctuation implements TextComponent{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        Punctuation that = (Punctuation) o;
-
+        PunctuationLeaf that = (PunctuationLeaf) o;
         return punctuationMark == that.punctuationMark;
     }
 

@@ -7,5 +7,5 @@ import java.io.File;
 
 
 public interface CustomFileReader {
-    String readLinesFromFile(File fileName) throws CustomException;
+    String readLinesFromFile(String stringFileName) throws CustomException;
 }

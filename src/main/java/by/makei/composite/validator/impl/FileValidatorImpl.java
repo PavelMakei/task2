@@ -15,13 +15,13 @@ public class FileValidatorImpl implements FileValidator {
     private static final String WINDOWS_FILE_SEPARATOR = "\\";
     private static final String URL_FILE_SEPARATOR = "/";
 
-    private FileValidatorImpl() {
-    }
+    private FileValidatorImpl() {    }
 
     public static FileValidatorImpl getInstance() {
         return instance;
     }
 
+    @Override
     public boolean validateFile(String fileName) {
         boolean isValid = false;
         if (fileName == null) {
@@ -41,7 +41,7 @@ public class FileValidatorImpl implements FileValidator {
             logger.log(Level.INFO, "File is correct");
             isValid = true;
         } else {
-            logger.log(Level.ERROR, "File {} is not exist or has size 0", fileName);
+            logger.log(Level.ERROR, "File {} does not exist or has size 0", fileName);
         }
 
         return isValid;

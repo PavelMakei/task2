@@ -3,7 +3,7 @@ package by.makei.composite.entity;
 public enum ConcreteTextComponent {
     TEXT("", ""),
     PARAGRAPH("\t", "\n"),
-    SENTENCE("", ""),
+    SENTENCE("", ""), //предложение
     LEXEME("", " "),
     WORD("", ""),
     BIT_EXPRESSION("","");//TODO if it has to be there?

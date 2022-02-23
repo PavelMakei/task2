@@ -1,9 +1,9 @@
 package by.makei.composite.entity;
 
-public class Letter implements TextComponent {
+public class LetterLeaf implements TextComponent {
     private char letter;
 
-    public Letter(char letter) {
+    public LetterLeaf(char letter) {
         this.letter = letter;
     }
 
@@ -21,9 +21,9 @@ public class Letter implements TextComponent {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Letter letter1 = (Letter) o;
+        LetterLeaf letterLeaf1 = (LetterLeaf) o;
 
-        return letter == letter1.letter;
+        return letter == letterLeaf1.letter;
     }
 
     @Override
