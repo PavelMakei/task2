@@ -10,6 +10,8 @@ import java.util.List;
 public interface TextComponent {
     static final Logger logger = LogManager.getLogger();
 
+    public TextComponentType getType();
+
     default boolean add(TextComponent component) throws CustomException {
         logger.log(Level.ERROR, "Operation is not supported");
         throw new CustomException("Operation is not supported");

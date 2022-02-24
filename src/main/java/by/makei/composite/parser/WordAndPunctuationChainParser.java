@@ -1,8 +1,9 @@
 package by.makei.composite.parser;
 
-import by.makei.composite.entity.PunctuationLeaf;
 import by.makei.composite.entity.TextComponent;
+import by.makei.composite.entity.TextComponentType;
 import by.makei.composite.entity.TextComposite;
+import by.makei.composite.entity.TextLeaf;
 import by.makei.composite.exception.CustomException;
 import org.apache.logging.log4j.Level;
 
@@ -26,7 +27,7 @@ public class WordAndPunctuationChainParser extends AbstractTextChainParser {
         while (matcher.find()) {
             for (int i = 0; i <= matcher.groupCount(); i++) {
                 if (matcher.group(i).matches(WORD_REGEXP)) {
-                    TextComponent wordConcreteComponent = new TextComposite("WORD");
+                    TextComponent wordConcreteComponent = new TextComposite(TextComponentType.WORD);
                     try {
                         component.add(wordConcreteComponent);
                     } catch (CustomException e) {
@@ -36,7 +37,7 @@ public class WordAndPunctuationChainParser extends AbstractTextChainParser {
                     logger.log(Level.DEBUG, "word - {}", matcher.group(i));
 
                 } else if (matcher.group(i).matches(PUNCTUATION_REGEXP)) {
-                    PunctuationLeaf punctuationLeaf = new PunctuationLeaf(matcher.group(i).charAt(i));
+                    TextLeaf punctuationLeaf = new TextLeaf(TextComponentType.PUNCTUATION_MARK, matcher.group(i).charAt(i));
                     try {
                         component.add(punctuationLeaf);
                     } catch (CustomException e) {

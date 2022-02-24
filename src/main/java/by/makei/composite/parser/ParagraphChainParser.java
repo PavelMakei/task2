@@ -1,6 +1,7 @@
 package by.makei.composite.parser;
 
 import by.makei.composite.entity.TextComponent;
+import by.makei.composite.entity.TextComponentType;
 import by.makei.composite.entity.TextComposite;
 import by.makei.composite.exception.CustomException;
 import org.apache.logging.log4j.Level;
@@ -11,11 +12,12 @@ import java.util.stream.Stream;
 
 public class ParagraphChainParser extends AbstractTextChainParser {
     private static final String PARAGRAPH_SPLITTER_REGEX = "(^|\\n)(\\t|\\s{4})";
-    private List<String> paragraphList = new ArrayList();
+
 
     public ParagraphChainParser() {
         this.nextParser = new SentenceChainParser();
     }
+    private List<String> paragraphList = new ArrayList();
 
     @Override
     public void parse(TextComponent component, String data) {
@@ -24,7 +26,7 @@ public class ParagraphChainParser extends AbstractTextChainParser {
                 .toList();
 
         for (var paragraph : paragraphList) {
-            TextComponent paragraphConcreteComponent = new TextComposite("PARAGRAPH");
+            TextComponent paragraphConcreteComponent = new TextComposite(TextComponentType.PARAGRAPH);
             try {
                 component.add(paragraphConcreteComponent);
             } catch (CustomException e) {

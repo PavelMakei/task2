@@ -1,6 +1,7 @@
 package by.makei.composite.parser;
 
 import by.makei.composite.entity.TextComponent;
+import by.makei.composite.entity.TextComponentType;
 import by.makei.composite.entity.TextComposite;
 import by.makei.composite.exception.CustomException;
 import org.apache.logging.log4j.Level;
@@ -25,7 +26,7 @@ public class SentenceChainParser extends AbstractTextChainParser {
 
         while (matcher.find()){
             String sentence = matcher.group();
-            TextComponent sentenceConcreteComponent = new TextComposite("SENTENCE");
+            TextComponent sentenceConcreteComponent = new TextComposite(TextComponentType.SENTENCE);
             try {
                 component.add(sentenceConcreteComponent);
             } catch (CustomException e) {

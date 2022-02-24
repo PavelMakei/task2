@@ -1,121 +1,120 @@
 package by.makei.composite.util.impl;
 
 import by.makei.composite.util.BitOperationUtil;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
 public class BitOperationImpl implements BitOperationUtil {
+    private static final BitOperationImpl instance = new BitOperationImpl();
 
-    //TODO on working
-    //https://javarush.ru/groups/posts/1925-pobitovihe-operacii
+    private BitOperationImpl (){};
+
+    public static BitOperationImpl getInstance(){
+        return instance;
+    }
+
+    //TODO Maybe it should be just static with closed constructor and no instance?
+
 
     @Override
     public String parseAndCalculateBitOperation(String bitOperation) {
-
-        return null;
+        List expression = expressionToRpn(bitOperation);
+        return String.valueOf(rpnToAnswer(expression));
     }
 
-    public static void main(String[] args) {
-        String test = "((1+2)-3)*3-(3+1)";
-        System.out.println(expressionToRpn(test));
-        System.out.println(rpnToAnswer(expressionToRpn(test)));
-    }
 
-    private static String expressionToRpn(String expression) {
-        String current = "";
-        Stack<Character> stack = new Stack<>();
-
+    private List<String> expressionToRpn(String expression) {
+        Stack<String> stack = new Stack<>();
         //divide on tokens
-
         List<String> tokens = new ArrayList<>();
-        StringBuffer token;
 
-       
         int priority;
+        StringBuilder token = new StringBuilder();
         for (int i = 0; i < expression.length(); i++) {
-            priority = getPriority(expression.charAt(i));
-
+            token = new StringBuilder();
+            token.append(expression.charAt(i));
+            //check if digit?
+            if (expression.charAt(i) == '-' || expression.charAt(i) >= 48 && expression.charAt(i) <= 57) {
+                while (i < expression.length()-1 && expression.charAt(i + 1) >= 48 && expression.charAt(i + 1) <= 57) {  //is digit?
+                    token.append(expression.charAt(++i));
+                }
+            } else
+                while (i < expression.length()-1 && token.charAt(0) != ')' && token.charAt(0) != '(' &&  token.charAt(0) == expression.charAt(i + 1)) {  //the same mark?
+                    token.append(expression.charAt(++i));
+                }
+            priority = getPriority(token.toString());
             if (priority == 0) {
-                current += expression.charAt(i);
+                tokens.add(token.toString());
             }
             if (priority == 1) {
-                stack.push(expression.charAt(i));
+                stack.push(token.toString());
             }
-
             if (priority > 1) {
-                current += ' ';
                 while (!stack.empty()) {
                     if (getPriority(stack.peek()) >= priority) {
-                        current += stack.pop();
+                        tokens.add(stack.pop());
                     } else break;
                 }
-                stack.push(expression.charAt(i));
+                stack.push(token.toString());
             }
-
             if (priority == -1) {
-                current += ' ';
                 while (getPriority(stack.peek()) != 1) {
-                    current += stack.pop();
+                    tokens.add(stack.pop());
                 }
                 stack.pop();
-
             }
         }
         while (!stack.empty()) {
-            current += stack.pop();
-
+            tokens.add(stack.pop());
         }
-        return current;
+        return tokens;
     }
 
-    private static double rpnToAnswer(String rpn) {
+    private int rpnToAnswer(List<String> rpn) {
 
-        String operand = "";
-        Stack<Double> stack = new Stack<>();
+        Stack<Integer> stack = new Stack<>();
 
-        for (int i = 0; i < rpn.length(); i++) {
-            if (rpn.charAt(i) == ' ') {
-                continue;
+        for (int i = 0; i < rpn.size(); i++) {
+
+            if (getPriority(rpn.get(i)) == 0) {
+                    stack.push(Integer.parseInt(rpn.get(i)));
             }
-            if (getPriority(rpn.charAt(i)) == 0) {
-                while (rpn.charAt(i) != ' ' && getPriority(rpn.charAt(i)) == 0) {
-                    operand += rpn.charAt(i++);
-                    if (i == rpn.length()) {
-                        break;
+            if (getPriority(rpn.get(i)) > 1) {
+                String token = rpn.get(i);
+                Integer b = stack.pop();
+                if(token.equals("~")){
+                    stack.push(~b);
+                }else {
+                    Integer a = stack.pop();
+                    switch (token) {
+                        case "<<" -> stack.push(a << b);
+                        case ">>" -> stack.push(a >> b);
+                        case ">>>" -> stack.push(a >>> b);
+                        case "&" -> stack.push(a & b);
+                        case "|" -> stack.push(a | b);
+                        case "^" -> stack.push(a ^ b);
                     }
-                    stack.push(Double.parseDouble(operand));
-                    operand = "";
                 }
             }
-            if (getPriority(rpn.charAt(i)) > 1) {
-                double a = stack.pop();
-                double b = stack.pop();
-
-                if(rpn.charAt(i) == '+'){stack.push(a+b);}
-                if(rpn.charAt(i) == '-'){stack.push(a-b);}
-                if(rpn.charAt(i) == '*'){stack.push(a*b);}
-                if(rpn.charAt(i) == '/'){stack.push(a/b);}
-
-            }
         }
-
-
         return stack.pop();
     }
 
-    private static int getPriority(char token) {
-        if (token == '*' || token == '/') {
-            return 3;
-        } else if (token == '+' || token == '-') {
-            return 2;
-        } else if (token == '(') {
-            return 1;
-        } else if (token == ')') {
-            return -1;
-        } else {
-            return 0;
+    private int getPriority(String token) {
+        //priority table https://javarush.ru/groups/posts/1925-pobitovihe-operacii
+        switch (token){
+            case "|" -> {return 2;}
+            case "^" -> {return 3;}
+            case "&" -> {return 4;}
+            case ">>>" -> {return 5;}
+            case ">>" -> {return 5;}
+            case "<<" -> {return 5;}
+            case "~" -> {return 6;}
+            case "(" -> {return 1;}
+            case ")" -> {return -1;}
+            default -> {return 0;}
         }
     }
+
 }

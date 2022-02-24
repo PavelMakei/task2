@@ -1,17 +1,19 @@
 package by.makei.composite.entity;
 
-public enum ConcreteTextComponent {
+public enum TextComponentType {
     TEXT("", ""),
     PARAGRAPH("\t", "\n"),
     SENTENCE("", ""), //предложение
     LEXEME("", " "),
     WORD("", ""),
-    BIT_EXPRESSION("","");//TODO if it has to be there?
+    LETTER("",""),
+    PUNCTUATION_MARK("","");
+
 
     private final String prefix;
     private final String postfix;
 
-    private ConcreteTextComponent(String prefix, String postfix) {
+    private TextComponentType(String prefix, String postfix) {
         this.prefix = prefix;
         this.postfix = postfix;
     }
