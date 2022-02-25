@@ -28,9 +28,6 @@ class TextServiceImplTest {
             +"\tЁУЕЫАОЭЯИЮ ёуеыаоэяиюB, C, D, F, G, H, J, K, L, M, N, P, Q, R, S, T, V, W, X, Z б, в, г, д, ж, з, й, к, л, м, н, п, р, с, т, ф, х, ц, ч, ш, щБ, В, Г, Д, Ж, З, Й, К, Л, М, Н, П, Р, С, Т, Ф, Х, Ц, Ч, Ш, Щ.\n";
 
 
-
-
-
     public TextServiceImpl service;
     public final int minWordValue = 3;
 
@@ -70,8 +67,8 @@ class TextServiceImplTest {
     @Test
     void findDuplicateNumberTest() throws CustomException {
         Map sentences = service.findDuplicateNumber(text3);
-        int expected = 3;
-        int actual = (Integer) sentences.get("this");
+        long expected = 3l;
+        long actual = (Long) sentences.get("this");
         assert (actual == expected);
     }
 

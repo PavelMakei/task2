@@ -16,7 +16,7 @@ public interface TextService {
     List<TextComponent> sortParagraphsBySentenceNumber(String text);
     List<TextComponent> findSentencesWithLongestWord(String text) throws CustomException;
     List<TextComponent> removeAllSentencesWithNumberWordsLessThen(String text, int minNumberWords) throws CustomException;
-    Map<String,Integer> findDuplicateNumber(String text) throws CustomException;
+    Map<String,Long> findDuplicateNumber(String text) throws CustomException;
     int countVowel (String text) throws CustomException;
     int countСonsonant(String text) throws CustomException;
 }

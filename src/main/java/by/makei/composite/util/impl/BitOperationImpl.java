@@ -1,12 +1,16 @@
 package by.makei.composite.util.impl;
 
 import by.makei.composite.util.BitOperationUtil;
+
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
 public class BitOperationImpl implements BitOperationUtil {
     private static final BitOperationImpl instance = new BitOperationImpl();
+    private static final Character ZERO = 48;
+    private static final Character NINE = 57;
 
     private BitOperationImpl (){};
 
@@ -25,7 +29,7 @@ public class BitOperationImpl implements BitOperationUtil {
 
 
     private List<String> expressionToRpn(String expression) {
-        Stack<String> stack = new Stack<>();
+        ArrayDeque<String> stack = new ArrayDeque<>();
         //divide on tokens
         List<String> tokens = new ArrayList<>();
 
@@ -35,8 +39,8 @@ public class BitOperationImpl implements BitOperationUtil {
             token = new StringBuilder();
             token.append(expression.charAt(i));
             //check if digit?
-            if (expression.charAt(i) == '-' || expression.charAt(i) >= 48 && expression.charAt(i) <= 57) {
-                while (i < expression.length()-1 && expression.charAt(i + 1) >= 48 && expression.charAt(i + 1) <= 57) {  //is digit?
+            if (expression.charAt(i) == '-' || expression.charAt(i) >= ZERO && expression.charAt(i) <= NINE) {
+                while (i < expression.length()-1 && expression.charAt(i + 1) >= ZERO && expression.charAt(i + 1) <= NINE) {  //is digit?
                     token.append(expression.charAt(++i));
                 }
             } else
@@ -51,7 +55,7 @@ public class BitOperationImpl implements BitOperationUtil {
                 stack.push(token.toString());
             }
             if (priority > 1) {
-                while (!stack.empty()) {
+                while (!stack.isEmpty()) {
                     if (getPriority(stack.peek()) >= priority) {
                         tokens.add(stack.pop());
                     } else break;
@@ -65,7 +69,7 @@ public class BitOperationImpl implements BitOperationUtil {
                 stack.pop();
             }
         }
-        while (!stack.empty()) {
+        while (!stack.isEmpty()) {
             tokens.add(stack.pop());
         }
         return tokens;

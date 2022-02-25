@@ -9,13 +9,13 @@ import by.makei.composite.service.TextService;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import java.util.*;
-import java.util.function.Consumer;
+import java.util.stream.Collectors;
+
 
 public class TextServiceImpl implements TextService {
     public static final Logger logger = LogManager.getLogger();
-    private static final String VOWEL_REGEX = "(?ui)[aeiouyаеёуионыэюя]";
+    private static final String VOWEL_REGEX = "(?ui)[aeiouyаеёуиоыэюя]";
     private static final String CONSONANT_REGEX = "(?ui)[qwrtpsdfghjklzxcvbnmбвгджзйклмнпрстфхцчшщ]";
     private static final TextServiceImpl instance = new TextServiceImpl();
 
@@ -57,24 +57,27 @@ public class TextServiceImpl implements TextService {
         List<TextComponent> leafs;
 
         //get size of the longest word
-        int sizeOfLongestWord = 0;
-        for (var paragraph : paragraphs) {
-            sentences = paragraph.getChildren();
-            for (var sentence : sentences) {
-                lexemes = sentence.getChildren();
-                for (var lexeme : lexemes) {
-                    words = lexeme.getChildren();
-                    for (var word : words) {
-                        if (word.getType().equals(TextComponentType.WORD)) {
-                            leafs = word.getChildren();
-                            if (sizeOfLongestWord < leafs.size()) {
-                                sizeOfLongestWord = leafs.size();
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        ArrayList<String> wordList = getListOfWord(text);
+        int sizeOfLongestWord = wordList.stream().mapToInt(String::length).max().getAsInt();
+
+//        int sizeOfLongestWord = 0;
+//        for (var paragraph : paragraphs) {
+//            sentences = paragraph.getChildren();
+//            for (var sentence : sentences) {
+//                lexemes = sentence.getChildren();
+//                for (var lexeme : lexemes) {
+//                    words = lexeme.getChildren();
+//                    for (var word : words) {
+//                        if (word.getType().equals(TextComponentType.WORD)) {
+//                            leafs = word.getChildren();
+//                            if (sizeOfLongestWord < leafs.size()) {
+//                                sizeOfLongestWord = leafs.size();
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
 //collect sentences which contain the longest word
         Set<TextComponent> collectedSentences = new HashSet();
         for (var paragraph : paragraphs) {
@@ -103,7 +106,7 @@ public class TextServiceImpl implements TextService {
         ParagraphChainParser parser = new ParagraphChainParser();
         parser.parse(textComposite, text);
         List<TextComponent> paragraphs = textComposite.getChildren();
-        List<TextComponent> sentences = new ArrayList<>();
+        List<TextComponent> sentences;
         List<TextComponent> lexemes;
         List<TextComponent> words;
         TextComponent sentence;
@@ -132,16 +135,19 @@ public class TextServiceImpl implements TextService {
     }
 
     @Override
-    public Map<String, Integer> findDuplicateNumber(String text) throws CustomException {
+    public Map<String, Long> findDuplicateNumber(String text) throws CustomException {
         ArrayList<String> wordList = getListOfWord(text);
-        Set<String> uniqueWords = new HashSet<>(wordList);
-        Map<String, Integer> result = new HashMap<>();
-        uniqueWords.forEach(new Consumer<String>() {
-            @Override
-            public void accept(String str) {
-                result.put(str, (int) wordList.stream().filter(word -> word.equals(str)).count());
-            }
-        });
+        Map<String, Long> result =  wordList.stream().collect(Collectors.groupingBy(s->s,Collectors.counting()));
+
+//        Set<String> uniqueWords = new HashSet<>(wordList);
+//        Map<String, Long> result = new HashMap<>();
+//        uniqueWords.forEach(new Consumer<String>() {
+//            @Override
+//            public void accept(String str) {
+//                result.put(str, wordList.stream().filter(word -> word.equals(str)).count());
+//            }
+//        });
+
         return result;
     }
 
@@ -152,44 +158,50 @@ public class TextServiceImpl implements TextService {
 
     @Override
     public int countСonsonant(String text) throws CustomException {
-        return getCountOfWords(text, CONSONANT_REGEX);
+        return  getCountOfWords(text, CONSONANT_REGEX);
     }
 
 
     private int getCountOfWords(String text, String regex) throws CustomException {
-        int count = 0;
-        TextComposite textComposite = new TextComposite(TextComponentType.PARAGRAPH);
-        ParagraphChainParser parser = new ParagraphChainParser();
-        parser.parse(textComposite, text);
-        List<TextComponent> paragraphs = textComposite.getChildren();
-        List<TextComponent> sentences;
-        List<TextComponent> lexemes;
-        List<TextComponent> words;
-        List<TextComponent> leafs;
+       ArrayList<String> wordList = getListOfWord(text);
+       return (int) wordList.stream().flatMap(s-> s.chars().mapToObj(c->(char) c))
+               .filter(character -> String.valueOf(character).matches(regex))
+               .count();
 
-        for (var paragraph : paragraphs) {
-            sentences = paragraph.getChildren();
-            for (var sentence : sentences) {
-                lexemes = sentence.getChildren();
-                for (var lexeme : lexemes) {
-                    words = lexeme.getChildren();
-                    for (var word : words) {
-                        if (word.getType().equals(TextComponentType.WORD)) {
-                            leafs = word.getChildren();
-                            for (var leaf : leafs) {
-                                if (leaf.getType().equals(TextComponentType.LETTER)) {
-                                    if (leaf.toString().matches(regex)) {
-                                        count++;
-                                        logger.log(Level.DEBUG, "- {}",leaf.toString());
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return count;
+
+//        int count = 0;
+//        TextComposite textComposite = new TextComposite(TextComponentType.PARAGRAPH);
+//        ParagraphChainParser parser = new ParagraphChainParser();
+//        parser.parse(textComposite, text);
+//        List<TextComponent> paragraphs = textComposite.getChildren();
+//        List<TextComponent> sentences;
+//        List<TextComponent> lexemes;
+//        List<TextComponent> words;
+//        List<TextComponent> leafs;
+//
+//        for (var paragraph : paragraphs) {
+//            sentences = paragraph.getChildren();
+//            for (var sentence : sentences) {
+//                lexemes = sentence.getChildren();
+//                for (var lexeme : lexemes) {
+//                    words = lexeme.getChildren();
+//                    for (var word : words) {
+//                        if (word.getType().equals(TextComponentType.WORD)) {
+//                            leafs = word.getChildren();
+//                            for (var leaf : leafs) {
+//                                if (leaf.getType().equals(TextComponentType.LETTER)) {
+//                                    if (leaf.toString().matches(regex)) {
+//                                        count++;
+//                                        logger.log(Level.DEBUG, "- {}",leaf.toString());
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        return count;
     }
 
     private ArrayList<String> getListOfWord(String text) throws CustomException {
