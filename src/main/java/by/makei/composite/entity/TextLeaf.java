@@ -1,5 +1,9 @@
 package by.makei.composite.entity;
 
+
+import org.apache.logging.log4j.Level;
+import java.util.List;
+
 public class TextLeaf implements TextComponent {
     private char character;
     private TextComponentType type;
@@ -10,8 +14,31 @@ public class TextLeaf implements TextComponent {
     }
 
     @Override
-    public TextComponentType getType() {
-        return type;
+    public TextComponentType getType() {return type;}
+
+
+    @Override
+    public boolean add(TextComponent component) {
+        {
+            logger.log(Level.ERROR, "Operation is not supported");
+            throw new UnsupportedOperationException("Operation is not supported");
+        }
+    }
+
+    @Override
+    public boolean remove(TextComponent component) {
+        {
+            logger.log(Level.ERROR, "Operation is not supported");
+            throw new UnsupportedOperationException("Operation is not supported");
+        }
+    }
+
+    @Override
+    public List<TextComponent> getChildren() {
+        {
+            logger.log(Level.ERROR, "Operation is not supported");
+            throw new UnsupportedOperationException("Operation is not supported");
+        }
     }
 
     @Override

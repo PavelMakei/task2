@@ -3,10 +3,8 @@ package by.makei.composite.parser;
 import by.makei.composite.entity.TextComponent;
 import by.makei.composite.entity.TextComponentType;
 import by.makei.composite.entity.TextComposite;
-import by.makei.composite.exception.CustomException;
 import by.makei.composite.util.BitOperationUtil;
 import by.makei.composite.util.impl.BitOperationImpl;
-import org.apache.logging.log4j.Level;
 
 public class LexemeChainParser extends AbstractTextChainParser {
     private static final String LEXEME_SPLITTER_REGEX = "\\s";
@@ -20,23 +18,17 @@ public class LexemeChainParser extends AbstractTextChainParser {
     public void parse(TextComponent component, String data) {
         String[] lexemes = data.split(LEXEME_SPLITTER_REGEX);
 
-        for (int i = 0; i<lexemes.length ; i++){
+        for (int i = 0; i < lexemes.length; i++) {
             TextComponent lexemeConcreteComponent = new TextComposite(TextComponentType.LEXEME);
 
-            if(lexemes[i].matches(BIT_OPERATION_REGEX_MATHER)){
+            if (lexemes[i].matches(BIT_OPERATION_REGEX_MATHER)) {
                 BitOperationUtil bitUtil = BitOperationImpl.getInstance();
                 String calculatedBitOperations;
                 calculatedBitOperations = bitUtil.parseAndCalculateBitOperation(lexemes[i]);
                 lexemes[i] = calculatedBitOperations;
             }
-
-            try {
-                component.add(lexemeConcreteComponent);
-            } catch (CustomException e) {
-                logger.log(Level.ERROR, "Can't be reached", e);
-            }
-
-            nextParser.parse(lexemeConcreteComponent,lexemes[i]);
+            component.add(lexemeConcreteComponent);
+            nextParser.parse(lexemeConcreteComponent, lexemes[i]);
         }
 
     }

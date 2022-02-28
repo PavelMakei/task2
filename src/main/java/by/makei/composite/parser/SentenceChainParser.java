@@ -27,11 +27,7 @@ public class SentenceChainParser extends AbstractTextChainParser {
         while (matcher.find()){
             String sentence = matcher.group();
             TextComponent sentenceConcreteComponent = new TextComposite(TextComponentType.SENTENCE);
-            try {
                 component.add(sentenceConcreteComponent);
-            } catch (CustomException e) {
-                logger.log(Level.ERROR, "Can't be reached", e);
-            }
             nextParser.parse(sentenceConcreteComponent,sentence);
         }
 

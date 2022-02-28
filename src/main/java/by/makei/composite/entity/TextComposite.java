@@ -27,6 +27,7 @@ public class TextComposite implements TextComponent{
         return components.remove(component);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<TextComponent> getChildren()  {
         return new ArrayList<>(components);

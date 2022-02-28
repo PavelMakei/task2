@@ -33,17 +33,15 @@ public class TextServiceImpl implements TextService {
         ParagraphChainParser parser = new ParagraphChainParser();
         parser.parse(textComposite, text);
         List<TextComponent> paragraphs = textComposite.getChildren();
-        paragraphs.sort((paragraph1, paragraph2) -> {
-            int result = 0;
-            try {
-                result = paragraph1.getChildren().size() - paragraph2.getChildren().size();
-            } catch (CustomException e) {
-                logger.log(Level.WARN, "Can't be reached");
-            }
-            return result;
-        });
-        return paragraphs;
+
+//        paragraphs.sort((paragraph1, paragraph2) -> {
+//            int result;
+//                result = paragraph1.getChildren().size() - paragraph2.getChildren().size();
+//            return result;
+//        });
+        return paragraphs.stream().sorted(Comparator.comparingInt(p -> p.getChildren().size())).collect(Collectors.toList());
     }
+
 
     @Override
     public List<TextComponent> findSentencesWithLongestWord(String text) throws CustomException {
@@ -79,25 +77,35 @@ public class TextServiceImpl implements TextService {
 //            }
 //        }
 //collect sentences which contain the longest word
-        Set<TextComponent> collectedSentences = new HashSet();
-        for (var paragraph : paragraphs) {
-            sentences = paragraph.getChildren();
-            for (var sentence : sentences) {
-                lexemes = sentence.getChildren();
-                for (var lexeme : lexemes) {
-                    words = lexeme.getChildren();
-                    for (var word : words) {
-                        if (word.getType().equals(TextComponentType.WORD)) {
-                            leafs = word.getChildren();
-                            if (leafs.size() == sizeOfLongestWord) {
-                                collectedSentences.add(sentence);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return new ArrayList<>(collectedSentences);
+
+        return   paragraphs.stream().flatMap(paragraph -> paragraph.getChildren().stream())//get sentences
+                .filter(sentence -> sentence.getChildren().stream()
+                        .anyMatch(lexeme -> lexeme.getChildren().stream()
+                                .filter(word -> word.getType().equals(TextComponentType.WORD))
+                                        .anyMatch(leaf -> leaf.getChildren().size() == sizeOfLongestWord)))
+                .collect(Collectors.toList());
+
+
+
+//        Set<TextComponent> collectedSentences = new HashSet();
+//        for (var paragraph : paragraphs) {
+//            sentences = paragraph.getChildren();
+//            for (var sentence : sentences) {
+//                lexemes = sentence.getChildren();
+//                for (var lexeme : lexemes) {
+//                    words = lexeme.getChildren();
+//                    for (var word : words) {
+//                        if (word.getType().equals(TextComponentType.WORD)) {
+//                            leafs = word.getChildren();
+//                            if (leafs.size() == sizeOfLongestWord) {
+//                                collectedSentences.add(sentence);
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        return new ArrayList<>(collectedSentences);
     }
 
     @Override

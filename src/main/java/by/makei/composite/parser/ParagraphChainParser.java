@@ -3,8 +3,6 @@ package by.makei.composite.parser;
 import by.makei.composite.entity.TextComponent;
 import by.makei.composite.entity.TextComponentType;
 import by.makei.composite.entity.TextComposite;
-import by.makei.composite.exception.CustomException;
-import org.apache.logging.log4j.Level;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +15,7 @@ public class ParagraphChainParser extends AbstractTextChainParser {
     public ParagraphChainParser() {
         this.nextParser = new SentenceChainParser();
     }
+
     private List<String> paragraphList = new ArrayList();
 
     @Override
@@ -27,11 +26,7 @@ public class ParagraphChainParser extends AbstractTextChainParser {
 
         for (var paragraph : paragraphList) {
             TextComponent paragraphConcreteComponent = new TextComposite(TextComponentType.PARAGRAPH);
-            try {
-                component.add(paragraphConcreteComponent);
-            } catch (CustomException e) {
-                logger.log(Level.ERROR, "Can't be reached", e);
-            }
+            component.add(paragraphConcreteComponent);
             nextParser.parse(paragraphConcreteComponent, paragraph);
 
         }

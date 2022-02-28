@@ -12,15 +12,12 @@ public class LetterApostropheChainParser extends AbstractTextChainParser {
     public void parse(TextComponent component, String data) {
         char[] letters = data.toCharArray();
         for (char character : letters) {
-            try {
                 if (character == '\'') {
                     component.add(new TextLeaf(TextComponentType.PUNCTUATION_MARK, character));
                 } else {
                     component.add(new TextLeaf(TextComponentType.LETTER, character));
                 }
-            } catch (CustomException e) {
-                logger.log(Level.ERROR, "Can't be reached", e);
-            }
+
         }
 
     }

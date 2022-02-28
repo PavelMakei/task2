@@ -5,27 +5,20 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.naming.OperationNotSupportedException;
 import java.util.List;
 
 public interface TextComponent {
-    static final Logger logger = LogManager.getLogger();
+    Logger logger = LogManager.getLogger();
 
-    public TextComponentType getType();
+    TextComponentType getType();
 
-    default boolean add(TextComponent component) throws CustomException {
-        logger.log(Level.ERROR, "Operation is not supported");
-        throw new CustomException("Operation is not supported");
-    }
+    boolean add(TextComponent component);
 
-    default boolean remove(TextComponent component) throws CustomException {
-        logger.log(Level.ERROR, "Operation is not supported");
-        throw new CustomException("Operation is not supported");
-    }
+    boolean remove(TextComponent component);
 
-    default List<TextComponent> getChildren() throws CustomException {
-        logger.log(Level.ERROR, "Operation is not supported");
-        throw new CustomException("Operation is not supported");
-    }
+    List<TextComponent> getChildren();
+
 
 
 //    default TextComponent getChildByIndex(int index) throws CustomException {
