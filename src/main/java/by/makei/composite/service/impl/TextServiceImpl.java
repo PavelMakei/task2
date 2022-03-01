@@ -6,7 +6,6 @@ import by.makei.composite.entity.TextComposite;
 import by.makei.composite.exception.CustomException;
 import by.makei.composite.parser.ParagraphChainParser;
 import by.makei.composite.service.TextService;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.util.*;
@@ -120,6 +119,8 @@ public class TextServiceImpl implements TextService {
         TextComponent sentence;
 
 
+        //TODO if it possible to do it with lambda?
+
         for (var paragraph : paragraphs) {
             sentences = paragraph.getChildren();
             for (int i = 0; i < sentences.size(); i++) {
@@ -143,7 +144,7 @@ public class TextServiceImpl implements TextService {
     }
 
     @Override
-    public Map<String, Long> findDuplicateNumber(String text) throws CustomException {
+    public Map<String, Long> findDuplicateNumber(String text){
         ArrayList<String> wordList = getListOfWord(text);
         Map<String, Long> result =  wordList.stream().collect(Collectors.groupingBy(s->s,Collectors.counting()));
 
@@ -165,7 +166,7 @@ public class TextServiceImpl implements TextService {
     }
 
     @Override
-    public int countСonsonant(String text) throws CustomException {
+    public int countConsonant(String text) throws CustomException {
         return  getCountOfWords(text, CONSONANT_REGEX);
     }
 
@@ -212,7 +213,7 @@ public class TextServiceImpl implements TextService {
 //        return count;
     }
 
-    private ArrayList<String> getListOfWord(String text) throws CustomException {
+    private ArrayList<String> getListOfWord(String text) {
         ArrayList<String> wordList = new ArrayList<>();
         TextComposite textComposite = new TextComposite(TextComponentType.PARAGRAPH);
         ParagraphChainParser parser = new ParagraphChainParser();
@@ -222,20 +223,27 @@ public class TextServiceImpl implements TextService {
         List<TextComponent> lexemes;
         List<TextComponent> words;
 
-        for (var paragraph : paragraphs) {
-            sentences = paragraph.getChildren();
-            for (var sentence : sentences) {
-                lexemes = sentence.getChildren();
-                for (var lexeme : lexemes) {
-                    words = lexeme.getChildren();
-                    for (var word : words) {
-                        if (word.getType().equals(TextComponentType.WORD)) {
-                            wordList.add(word.toString().toLowerCase(Locale.ROOT));
-                        }
-                    }
-                }
-            }
-        }
-        return wordList;
+        List<String> collectedWordList = paragraphs.stream().flatMap(paragraph -> paragraph.getChildren().stream())
+                .flatMap(sentence -> sentence.getChildren().stream())
+                .flatMap(lexeme -> lexeme.getChildren().stream())
+                .filter(word -> word.getType().equals(TextComponentType.WORD))
+                .map(w -> w.toString().toLowerCase(Locale.ROOT))
+                .collect(Collectors.toList());
+
+//        for (var paragraph : paragraphs) {
+//            sentences = paragraph.getChildren();
+//            for (var sentence : sentences) {
+//                lexemes = sentence.getChildren();
+//                for (var lexeme : lexemes) {
+//                    words = lexeme.getChildren();
+//                    for (var word : words) {
+//                        if (word.getType().equals(TextComponentType.WORD)) {
+//                            wordList.add(word.toString().toLowerCase(Locale.ROOT));
+//                        }
+//                    }
+//                }
+//            }
+//        }
+        return (ArrayList<String>) collectedWordList;
     }
 }

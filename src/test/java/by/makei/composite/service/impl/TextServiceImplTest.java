@@ -38,7 +38,7 @@ class TextServiceImplTest {
 
 
     @Test
-    void sortParagraphsBySentenceNumberTest() throws CustomException {
+    void sortParagraphsBySentenceNumberTest(){
         List<TextComponent> sorted = service.sortParagraphsBySentenceNumber(text1);
         int[] actual = new int[sorted.size()];
         int[] expected = {1,1,2,2};
@@ -80,8 +80,8 @@ class TextServiceImplTest {
     }
 
     @Test
-    void countСonsonants() throws CustomException {
-        int actual = service.countСonsonant(text5);
+    void countConsonants() throws CustomException {
+        int actual = service.countConsonant(text5);
         int expected = (20+21)*2;
         Assertions.assertEquals (expected,actual);
 

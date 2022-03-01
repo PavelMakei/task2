@@ -18,5 +18,5 @@ public interface TextService {
     List<TextComponent> removeAllSentencesWithNumberWordsLessThen(String text, int minNumberWords) throws CustomException;
     Map<String,Long> findDuplicateNumber(String text) throws CustomException;
     int countVowel (String text) throws CustomException;
-    int countСonsonant(String text) throws CustomException;
+    int countConsonant(String text) throws CustomException;
 }
