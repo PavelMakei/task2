@@ -65,10 +65,16 @@ class TextServiceImplTest {
     }
 
     @Test
-    void findDuplicateNumberTest() throws CustomException {
+    void findDuplicateNumberTest() {
         Map sentences = service.findDuplicateNumber(text3);
         long expected = 3l;
         long actual = (Long) sentences.get("this");
+
+        sentences.forEach((word, count)-> {
+            System.out.print(word + " : " + count);
+            System.out.println();
+        });
+
         assert (actual == expected);
     }
 

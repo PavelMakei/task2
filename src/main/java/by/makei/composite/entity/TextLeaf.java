@@ -19,26 +19,20 @@ public class TextLeaf implements TextComponent {
 
     @Override
     public boolean add(TextComponent component) {
-        {
             logger.log(Level.ERROR, "Operation is not supported");
             throw new UnsupportedOperationException("Operation is not supported");
-        }
     }
 
     @Override
     public boolean remove(TextComponent component) {
-        {
             logger.log(Level.ERROR, "Operation is not supported");
             throw new UnsupportedOperationException("Operation is not supported");
-        }
     }
 
     @Override
     public List<TextComponent> getChildren() {
-        {
             logger.log(Level.ERROR, "Operation is not supported");
             throw new UnsupportedOperationException("Operation is not supported");
-        }
     }
 
     @Override

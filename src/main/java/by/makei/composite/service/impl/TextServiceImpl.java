@@ -121,6 +121,11 @@ public class TextServiceImpl implements TextService {
 
         //TODO if it possible to do it with lambda?
 
+
+//        List<TextComponent> cutParagraphs = paragraphs.stream().flatMap(paragr -> paragr.getChildren().stream())
+//                .filter(sent -> sent.getChildren().stream()
+//                        .anyMatch(lexeme -> lexeme.getChildren().stream()))
+
         for (var paragraph : paragraphs) {
             sentences = paragraph.getChildren();
             for (int i = 0; i < sentences.size(); i++) {
