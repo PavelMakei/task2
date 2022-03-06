@@ -18,8 +18,6 @@ public class CustomFileReaderImpl implements CustomFileReader {
 
     private static final Logger logger = LogManager.getLogger();
     private static final CustomFileReaderImpl instance = new CustomFileReaderImpl();
-    private static final String WINDOWS_FILE_SEPARATOR = "\\";
-    private static final String URL_FILE_SEPARATOR = "/";
 
     private CustomFileReaderImpl() {}
 
