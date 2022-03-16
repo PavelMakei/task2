@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SentenceChainParser extends AbstractTextChainParser {
-    private static final String SENTENCE_REGEX = "([A-Z]|[\\p{Lu}])(.|\\n)+?([.!?\\u2026])(\\s|\\n)";
+    private static final String SENTENCE_REGEX = "(?s).*?(?:[?!.](\\n|\\s+|$))";
     // Начинается с заглавной и заканчивается .!?... + " " или \n
 
     public SentenceChainParser() {

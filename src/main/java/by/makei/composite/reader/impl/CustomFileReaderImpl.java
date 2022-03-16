@@ -2,7 +2,6 @@ package by.makei.composite.reader.impl;
 
 import by.makei.composite.exception.CustomException;
 import by.makei.composite.reader.CustomFileReader;
-
 import by.makei.composite.util.CustomFileUtil;
 import by.makei.composite.util.impl.CustomFileUtilImpl;
 import org.apache.logging.log4j.Level;
@@ -26,7 +25,7 @@ public class CustomFileReaderImpl implements CustomFileReader {
     }
 
     @Override
-    public String readLinesFromFile(String stringFileName) throws CustomException {
+    public String readTextFromFile(String stringFileName) throws CustomException {
         CustomFileUtil fileUtil = CustomFileUtilImpl.getInstance();
         File file = fileUtil.getFileFromStringForResourcesPackage(stringFileName);
         Path path = file.toPath();

@@ -24,7 +24,7 @@ class CustomFileReaderImplTest {
     @Test
     void readLinesFromFile() throws CustomException {
         CustomFileReaderImpl reader = CustomFileReaderImpl.getInstance();
-        String actual = reader.readLinesFromFile(FILE_NAME);
+        String actual = reader.readTextFromFile(FILE_NAME);
         assertEquals(EXPECTED_TEXT,actual);
 
     }

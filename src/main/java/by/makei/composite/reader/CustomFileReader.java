@@ -5,5 +5,5 @@ import by.makei.composite.exception.CustomException;
 
 
 public interface CustomFileReader {
-    String readLinesFromFile(String stringFileName) throws CustomException;
+    String readTextFromFile(String stringFileName) throws CustomException;
 }
