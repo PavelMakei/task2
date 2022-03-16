@@ -3,17 +3,13 @@ package by.makei.composite.parser;
 import by.makei.composite.entity.TextComponent;
 import by.makei.composite.entity.TextComponentType;
 import by.makei.composite.entity.TextComposite;
-import by.makei.composite.exception.CustomException;
-import org.apache.logging.log4j.Level;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class SentenceChainParser extends AbstractTextChainParser {
-    private static final String SENTENCE_REGEX = "([A-Z]|[А-ЯЁ]).+?(\\.|\\!|\\?|\\u2026)";
-    // Нчинается с заглавной и заканчивается .!?...
-    //добавить возможность пробельных символов в конце строки? "(\s|$)"
-
+    private static final String SENTENCE_REGEX = "([A-Z]|[\\p{Lu}])(.|\\n)+?([.!?\\u2026])(\\s|\\n)";
+    // Начинается с заглавной и заканчивается .!?... + " " или \n
 
     public SentenceChainParser() {
         this.nextParser = new LexemeChainParser();

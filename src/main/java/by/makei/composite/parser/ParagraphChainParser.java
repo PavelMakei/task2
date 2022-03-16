@@ -22,6 +22,7 @@ public class ParagraphChainParser extends AbstractTextChainParser {
     public void parse(TextComponent component, String data) {
         paragraphList = Stream.of(data.split(PARAGRAPH_SPLITTER_REGEX))
                 .filter(p -> !p.isEmpty())
+                .map(p ->  p + "\n")
                 .toList();
 
         for (var paragraph : paragraphList) {
